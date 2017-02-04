@@ -121,7 +121,7 @@ server.route({
 // GET ALL CHARACTERS FOR A GIVEN STORY AND USER
 server.route({
   method: 'GET',
-  path: '/users/{id}/stories/{storyId}/characters'
+  path: '/users/{id}/stories/{storyId}/characters',
   handler: function (request, reply) {
     reply("Success!")
   }
@@ -130,7 +130,7 @@ server.route({
 // GET A SPECIFIC CHARACTER FOR A GIVEN STORY AND USER
 server.route({
   method: 'GET',
-  path: '/users/{id}/stories/{storyId}/characters/{charId}'
+  path: '/users/{id}/stories/{storyId}/characters/{charId}',
   handler: function (request, reply) {
     reply("Success!")
   }
@@ -179,7 +179,7 @@ server.route({
 */
 server.route({
   method: 'PUT',
-  path: '/users/{id}/stories/{storyId}/characters/{charId}'
+  path: '/users/{id}/stories/{storyId}/characters/{charId}',
   handler: function (request, reply) {
     reply("Success!")
   }
@@ -199,7 +199,7 @@ server.route({
 // GET A SPECIFIC {Question, Answer} pair FOR A GIVEN Character and Question
 server.route({
   method: 'GET',
-  path: '/users/{id}/stories/{storyId}/characters/{charId}/answers/{questId}'
+  path: '/users/{id}/stories/{storyId}/characters/{charId}/answers/{questId}',
   handler: function (request, reply) {
     reply("Success!")
   }
