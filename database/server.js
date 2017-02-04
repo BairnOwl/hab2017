@@ -43,6 +43,14 @@ server.route({
 
 // CHARACTER ROUTES
 
+server.route({
+  method: 'GET',
+  path: '/users/{id}/stories/{storyId}/characters'
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
 
 //  QUESTION ROUTES
 
