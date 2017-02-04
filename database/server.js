@@ -1,9 +1,16 @@
 'use strict';
 
 const Hapi = require('hapi');
+const mongoose = require('mongoose');
+const User = require('./models/User.js');
+const Question = require('./models/Question.js');
+const Character = require('./models/Character.js');
+const Story = require('./models/Story.js');
 
 const server = new Hapi.Server();
-server.connection({ port: process.env.PORT || 3000, host: 'localhost' });
+server.connection({ port: process.env.PORT || 3000, host: process.env.HOST || 'localhost' });
+
+mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/test');
 
 // USER ROUTES
 

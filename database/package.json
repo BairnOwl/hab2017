@@ -11,6 +11,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "hapi": "16.1.0"
+    "hapi": "16.1.0",
+    "mongoose": "4.8.1"
   }
 }
