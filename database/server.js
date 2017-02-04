@@ -8,22 +8,37 @@ server.connection({ port: process.env.PORT || 3000, host: 'localhost' });
 // USER ROUTES
 server.route({
     method: 'GET',
-    path: '/',
+    path: '/users/{id}',
     handler: function (request, reply) {
       reply("It good")
     }
 });
 
 server.route({
-  method: 'GET',
-  path: '/create/{name}',
+  method: 'POST',
+  path: '/users',
   handler: function (request, reply) {
-    data.push({"name" : request.params.name});
     reply("Success!")
   }
-})
+});
+
+server.route({
+  method: 'PUT',
+  path: '/users/{id}',
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
 
 // STORY ROUTES
+
+server.route({
+  method: 'POST',
+  path: '/users/{id}/stories',
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
 
 
 // CHARACTER ROUTES
