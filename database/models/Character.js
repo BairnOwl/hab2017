@@ -1,3 +1,8 @@
 const mongoose = require('mongoose');
 
-module.exports = mongoose.model('User', userSchema);
+let characterSchema = mongoose.Schema({
+  title: String,
+  questionAnswer: [ { questionId: ObjectId, answerText: String} ]
+})
+
+module.exports = mongoose.model('User', characterSchema);
