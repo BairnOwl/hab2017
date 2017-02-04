@@ -1,9 +1,16 @@
 'use strict';
 
 const Hapi = require('hapi');
+const mongoose = require('mongoose');
+const User = require('./models/User.js');
+const Question = require('./models/Question.js');
+const Character = require('./models/Character.js');
+const Story = require('./models/Story.js');
 
 const server = new Hapi.Server();
-server.connection({ port: process.env.PORT || 3000, host: 'localhost' });
+server.connection({ port: process.env.PORT || 3000, host: process.env.HOST || 'localhost' });
+
+mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/test');
 
 // USER ROUTES
 
@@ -121,7 +128,7 @@ server.route({
 // GET ALL CHARACTERS FOR A GIVEN STORY AND USER
 server.route({
   method: 'GET',
-  path: '/users/{id}/stories/{storyId}/characters'
+  path: '/users/{id}/stories/{storyId}/characters',
   handler: function (request, reply) {
     reply("Success!")
   }
@@ -130,7 +137,7 @@ server.route({
 // GET A SPECIFIC CHARACTER FOR A GIVEN STORY AND USER
 server.route({
   method: 'GET',
-  path: '/users/{id}/stories/{storyId}/characters/{charId}'
+  path: '/users/{id}/stories/{storyId}/characters/{charId}',
   handler: function (request, reply) {
     reply("Success!")
   }
@@ -179,14 +186,14 @@ server.route({
 */
 server.route({
   method: 'PUT',
-  path: '/users/{id}/stories/{storyId}/characters/{charId}'
+  path: '/users/{id}/stories/{storyId}/characters/{charId}',
   handler: function (request, reply) {
     reply("Success!")
   }
 });
 
 
-//  QUESTION ROUTES
+//  Answer ROUTES
 // GET ALL answered questions FOR A GIVEN CHARACTER
 server.route({
   method: 'GET',
@@ -199,7 +206,27 @@ server.route({
 // GET A SPECIFIC {Question, Answer} pair FOR A GIVEN Character and Question
 server.route({
   method: 'GET',
-  path: '/users/{id}/stories/{storyId}/characters/{charId}/answers/{questId}'
+  path: '/users/{id}/stories/{storyId}/characters/{charId}/answers/{questId}',
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
+//Question ROUTES
+
+// GET ALL questions
+server.route({
+  method: 'GET',
+  path: '/questions',
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
+// GET A SPECIFIC Question
+server.route({
+  method: 'GET',
+  path: '/questions/{questId}',
   handler: function (request, reply) {
     reply("Success!")
   }
