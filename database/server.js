@@ -66,7 +66,7 @@ server.route({
 });
 
 // STORY ROUTES
-// GET A SPECIFIC STORIES FOR A GIVEN USER
+// GET A SPECIFIC STORY FOR A GIVEN USER
 server.route({
   method: 'GET',
   path: '/users/{id}/stories/{storyId}',
@@ -187,6 +187,56 @@ server.route({
 
 
 //  QUESTION ROUTES
+// GET ALL answered questions FOR A GIVEN CHARACTER
+server.route({
+  method: 'GET',
+  path: '/users/{id}/stories/{storyId}/characters/{charId}/answers',
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
+// GET A SPECIFIC {Question, Answer} pair FOR A GIVEN Character and Question
+server.route({
+  method: 'GET',
+  path: '/users/{id}/stories/{storyId}/characters/{charId}/answers/{questId}'
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
+// CREATE NEW Question
+// send json as follows:
+/*
+  {
+    "questText" : "What color . . . ?"
+  }
+*/
+server.route({
+  method: 'POST',
+  path: '/questions',
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
+// UPDATE A Question
+// CHANGE TEXT
+// send json as follows:
+/*
+  {
+    "questText" : "My new question?"
+
+  }
+*/
+server.route({
+  method: 'PUT',
+  path: '/questions/{questId}',
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
 
 server.start((err) => {
     if (err) {
