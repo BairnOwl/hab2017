@@ -59,6 +59,30 @@ server.route({
 
 // CHARACTER ROUTES
 
+server.route({
+  method: 'GET',
+  path: '/users/{id}/stories/{storyId}/characters/{charId}'
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
+server.route({
+  method: 'POST',
+  path: '/users/{id}/stories/{storyId}/characters',
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
+server.route({
+  method: 'PUT',
+  path: '/users/{id}/stories/{storyId}/characters/{charId}'
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
 
 //  QUESTION ROUTES
 
