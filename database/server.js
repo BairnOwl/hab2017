@@ -33,8 +33,24 @@ server.route({
 // STORY ROUTES
 
 server.route({
+  method: 'GET',
+  path: '/users/{id}/stories',
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
+server.route({
   method: 'POST',
   path: '/users/{id}/stories',
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
+server.route({
+  method: 'PUT',
+  path: '/users/{id}/stories/{storyId}',
   handler: function (request, reply) {
     reply("Success!")
   }
