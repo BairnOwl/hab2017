@@ -11,8 +11,9 @@ const server = new Hapi.Server();
 server.connection({ port: process.env.PORT || 3000,
                     host: process.env.HOST || 'localhost' });
 
-const db = mongoose.connect(process.env.MONGO_URL
-  || 'mongodb://hab2017:hab2017@ds049624.mlab.com:49624/coledev');
+mongoose.connect(process.env.MONGO_URL || 'mongodb://hab2017:hab2017@ds049624.mlab.com:49624/coledev');
+
+let db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -25,7 +26,7 @@ db.once('open', function() {
       method: 'GET',
       path: '/users/{id}',
       handler: function (request, reply) {
-        reply("It good")
+        reply("yo");
       }
   });
 
@@ -41,7 +42,14 @@ db.once('open', function() {
     method: 'POST',
     path: '/users',
     handler: function (request, reply) {
-      reply("Success!")
+      let newUser = new User({username:"Cole",password:"pass"});
+      newUser.save((err, user) => {
+        if (err) {
+          throw err;
+        } else {
+          reply(user.toJSON());
+        }
+      });
     }
   });
 

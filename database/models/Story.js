@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
 
 let storySchema = mongoose.Schema({
-	title: String
-	chars: [ charId: ObjectId ]
+	title: String,
+	chars: [ mongoose.Schema.Types.ObjectId  ]
 })
 
-module.exports = mongoose.model('Story', userSchema);
-
+module.exports = mongoose.model('Story', storySchema);
