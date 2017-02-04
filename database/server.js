@@ -193,7 +193,7 @@ server.route({
 });
 
 
-//  QUESTION ROUTES
+//  Answer ROUTES
 // GET ALL answered questions FOR A GIVEN CHARACTER
 server.route({
   method: 'GET',
@@ -207,6 +207,26 @@ server.route({
 server.route({
   method: 'GET',
   path: '/users/{id}/stories/{storyId}/characters/{charId}/answers/{questId}',
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
+//Question ROUTES
+
+// GET ALL questions
+server.route({
+  method: 'GET',
+  path: '/questions',
+  handler: function (request, reply) {
+    reply("Success!")
+  }
+});
+
+// GET A SPECIFIC Question
+server.route({
+  method: 'GET',
+  path: '/questions/{questId}',
   handler: function (request, reply) {
     reply("Success!")
   }
