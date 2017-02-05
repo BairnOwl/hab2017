@@ -80,11 +80,12 @@
         margin-left: 50px;
     }
 
+
     #main {
         transition: margin-left .5s;
         padding: 16px;
         position: absolute;
-        top: 0;
+        top: 50px;
         left: 25px;
         margin-left: 50px;
     }
@@ -93,15 +94,20 @@
         transition: margin-left .5s;
         padding: 16px;
         position: absolute;
-        top: 0;
+        top: 50px;
         right: 25px;
         margin-left: 50px;
+    }
+
+    #newStory {
+        text-align:center;
     }
 
     @media screen and (max-height: 450px) {
         .sidenav {padding-top: 15px;}
         .sidenav a {font-size: 18px;}
     }
+
 </style>
 
 <div id="mySidenav" class="sidenav">
@@ -112,11 +118,18 @@
     <a href="#">Log Out</a>
 </div>
 
+<div id="header"><h3>Know Thy Self</h3><hr></div>
+
 <div id="main">
-    <h3>Know Thy Self</h3>
     <!---<img user="">--->
     <h4>User Name</h4>
     <span style="font-size:15px;cursor:pointer" onclick="openNav()">INSERT IMAGE HERE</span>
+</div>
+
+<div id="newStory">
+        <form action="/create/user" method="POST" type="newStory">
+            <input type="submit" name="newStory" value="New Story?" />
+        </form>
 </div>
 
 <div id="stories">

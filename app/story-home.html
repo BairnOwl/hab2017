@@ -84,7 +84,7 @@
         transition: margin-left .5s;
         padding: 16px;
         position: absolute;
-        top: 0;
+        top: 50px;
         left: 25px;
         margin-left: 50px;
     }
@@ -93,9 +93,13 @@
         transition: margin-left .5s;
         padding: 16px;
         position: absolute;
-        top: 0;
+        top: 50px;
         right: 25px;
         margin-left: 50px;
+    }
+
+    #newChar {
+        text-align:center;
     }
 
     @media screen and (max-height: 450px) {
@@ -112,12 +116,18 @@
     <a href="#">Log Out</a>
 </div>
 
+<div id="header"><h3>Know Thy Self</h3><hr></div>
+
 <div id="main">
-    <h3>Know Thy Self</h3>
     <!---<img user="">--->
     <h4>User Name</h4>
     <span style="font-size:15px;cursor:pointer" onclick="openNav()">INSERT IMAGE HERE</span>
 </div>
+
+<div id="newChar">
+    <form action="/create/user" method="POST" type="newChar">
+        <input type="submit" name="newChar" value="New Character?" />
+    </form></div>
 
 <div id="characters">
     <h2>My Characters</h2>
