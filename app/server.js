@@ -5,25 +5,21 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-
 var http = require('http');
+app.use(bodyParser.urlencoded({extended:false}));
 
 var engines = require('consolidate');
-app.engine('html', engines.hogan);
-app.set('views', __dirname + '/templates');
-app.use(express.static('public'));
-app.use(bodyParser.urlencoded({extended:false}));
+//app.engine('html', engines.hogan);
+//app.set('views', __dirname + '/app');
+app.use(express.static(__dirname));
 
 var server = http.createServer(app);
 
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-app.get('/', function (req, res) {
-    res.render('index.html');
-});
+// app.get('/', function (req, res) {
+//     res.render('index.html');
+// });
 
 app.get('/', function (req, res) {
     //res.sendFile('index.html', {root: '.'});
@@ -31,7 +27,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/bower_components/:folder/:file', function (req, res) {
-    res.render('bower_components/' + req.params.folder+'/'+req.params.file);
+    res.render('bower_components/'+req.params.folder+'/'+req.params.file);
 });
 
 // USER ROUTES
@@ -39,6 +35,8 @@ app.get('/bower_components/:folder/:file', function (req, res) {
 // Creates a new user
 app.post('/create/user/', function(req, res) {
 
+    //console.log(req);
+    console.log("-------------------------");
     console.log(req.body);
 
     var username = req.body.username;
@@ -49,17 +47,15 @@ app.post('/create/user/', function(req, res) {
         "password": password
     };
 
-    var url = 'http://localhost:3000/users';
+    var url = '/users';
 
     // connect to database
     var request = new XMLHttpRequest();
     request.open('POST', url, true);
 
     request.addEventListener('load', function(e){
-        console.log('loaded');
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
-            console.log(data);
             res.json(data);
         }
     }, false);
