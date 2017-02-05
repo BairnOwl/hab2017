@@ -11,6 +11,8 @@ var http = require('http');
 var engines = require('consolidate');
 app.engine('html', engines.hogan);
 app.set('views', __dirname + '/templates');
+app.set('view engine', engines.hogan);
+
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:false}));
 
@@ -51,7 +53,7 @@ app.post('/create/user/', function(req, res) {
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
             console.log(data._id);
-            res.render('user-home.html', { userId: data._id });
+            res.render('userHome.html', { userId: data._id });
             console.log("nooooooo");
         }
     }, false);
