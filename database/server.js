@@ -49,7 +49,7 @@ db.once('open', function() {
     path: '/users',
     handler: function (request, reply) {
 
-      var body = JSON.parse(request.payload);
+      let body = JSON.parse(request.payload);
 
       let newUser = new User({username: body.username, password: body.password});
 
@@ -148,7 +148,7 @@ db.once('open', function() {
             if (res.statusCode == 200) {
               reply(story.toJSON())
             } else {
-              reply(res)
+              reply(500, res)
             }
           })
         }
@@ -212,7 +212,41 @@ db.once('open', function() {
     method: 'PUT',
     path: '/users/{id}/stories/{storyId}',
     handler: function (request, reply) {
-      reply("Success!")
+      var id = request.params.id;
+      console.log(request.params.id);
+      if (request.payload && request.payload.characterId) {
+        Story.findById(id, (err, story) => {
+          if (err) {
+            throw err;
+          } else {
+            story.chars.push(request.payload.characterId);
+            story.save((err, story) => {
+              if (err) {
+                throw err;
+              } else {
+                reply(story.toJSON());
+              }
+            })
+          }
+        })
+      } else if (request.payload && request.payload.characterIds) {
+        Story.findById(id, (err, story) => {
+          if (err) {
+            throw err;
+          } else {
+            story.chars = request.payload.characterIds;
+            story.save((err, story) => {
+              if (err) {
+                throw err;
+              } else {
+                reply(story.toJSON());
+              }
+            })
+          }
+        })
+      } else {
+        throw new Error("bad data");
+      }
     }
   });
 
@@ -227,7 +261,7 @@ db.once('open', function() {
       Story.findById(request.params.storyId, (err, story) => {
         if (err) {
           throw err;
-        } else{
+        } else {
           let chars = story.chars.map((cid) => {
             return Character.findById(cid)
           })
@@ -245,7 +279,7 @@ db.once('open', function() {
         Character.findById(request.params.charId, (err, char) => {
           if (err) {
             throw err;
-          } else{
+          } else {
             reply(char.toJSON());
           }
         })
@@ -264,20 +298,24 @@ db.once('open', function() {
     method: 'POST',
     path: '/users/{id}/stories/{storyId}/characters',
     handler: function (request, reply) {
-      let newChar = new Character({title: "Mystery Man", questionAnswer: []});
+      let char = {
+        title: request.payload.title;
+        questionAnswer: []
+      }
+      let newChar = new Character(char);
       newChar.save((err, char) => {
         if (err) {
           throw err;
         } else {
           let req = {
             method: 'PUT',
-            url: '/users/{id}/stories/{StoryId}',
+            url: `/users/${id}/stories/${storyId}`,
             payload: JSON.stringify({'charId': char.id})
           }
           server.inject(req, (res) => {
-            if(res.statusCode == 200){
+            if (res.statusCode == 200) {
               reply(char.toJSON())
-            }else{
+            } else {
               reply(res)
             }
           })
@@ -312,17 +350,47 @@ db.once('open', function() {
     }
   */
   server.route({
-    //TODO
       method: 'PUT',
       path: '/users/{id}/stories/{storyId}/characters/{charId}',
       handler: function (request, reply) {
-        Character.findById(request.params.id, (err, char) => {
-          if (err) {
-            throw err;
-          } else{
-            reply(char.toJSON());
-          }
-        })
+        var id = request.params.id;
+        console.log(request.params.id);
+        if (request.payload && request.payload.question) {
+          Character.findById(id, (err, char) => {
+            if (err) {
+              throw err;
+            } else {
+              char.questionAnswer.push({questionId:request.payload.question.questionId,
+                                        answerText:request.payload.question.answerText});
+              char.save((err, char) => {
+                if (err) {
+                  throw err;
+                } else {
+                  reply(char.toJSON());
+                }
+              })
+            }
+          })
+        } else if (request.payload && request.payload.questions) {
+          Character.findById(id, (err, char) => {
+            if (err) {
+              throw err;
+            } else {
+              char.questionAnswer = request.payload.questions.map((qa) => {
+                return {questionId:qa.questionId, answerText:qa.answerText}
+              });
+              char.save((err, char) => {
+                if (err) {
+                  throw err;
+                } else {
+                  reply(char.toJSON());
+                }
+              })
+            }
+          })
+        } else {
+          throw new Error("bad data");
+        }
       }
   });
 
@@ -337,11 +405,10 @@ db.once('open', function() {
       Character.findById(request.params.charId, (err, char) => {
         if (err) {
           throw err;
-        } else{
+        } else {
           reply(char.questionAnswer.toJSON());
         }
-        }
-      )
+      })
     }
   });
   //??????
@@ -351,7 +418,18 @@ db.once('open', function() {
     method: 'GET',
     path: '/users/{id}/stories/{storyId}/characters/{charId}/answers/{questId}',
     handler: function (request, reply) {
-      reply("Success!")
+      Character.findById(request.params.charId, (err, char) => {
+        if (err) {
+          throw err;
+        } else {
+          for qa in char.questionAnswer {
+            if (qa.questionId == request.params.questId) {
+              reply(qa.toJSON());
+            }
+          }
+          throw new Error();
+        }
+      })
     }
   });
 
@@ -362,7 +440,13 @@ db.once('open', function() {
     method: 'GET',
     path: '/questions',
     handler: function (request, reply) {
-      reply("Success!")
+      Questions.find({}, (err, questions) => {
+        if (err) {
+          throw err;
+        } else {
+          reply(questions.toJSON());
+        }
+      })
     }
   });
 
@@ -374,7 +458,7 @@ db.once('open', function() {
         Question.findById(request.params.id, (err, quest) => {
           if (err) {
             throw err;
-          } else{
+          } else {
             reply(quest.toJSON());
           }
         })
@@ -385,21 +469,30 @@ db.once('open', function() {
   // send json as follows:
   /*
     {
-      "questText" : "What color . . . ?"
+      "questText" : "What color . . . ?",
+      "isStandard" : boolean (default false),
+      "weight" : double (default 1)
     }
   */
   server.route({
     method: 'POST',
     path: '/questions',
     handler: function (request, reply) {
-      let newQuest = new Question({questText: "Do you like yourself?", isStandard: true, weight: 0});
-      newQuest.save((err, quest) => {
-        if (err) {
-          throw err;
-        } else {
-          reply(quest.toJSON());
-        }
-      });
+      if (request.payload && request.payload.questText && request.payload.isStandard && request.payload.weight) {
+        let question = {questText: request.payload.questText,
+                        isStandard: request.payload.isStandard,
+                        weight: request.payload.weight}
+        let newQuest = new Question(question);
+        newQuest.save((err, quest) => {
+          if (err) {
+            throw err;
+          } else {
+            reply(quest.toJSON());
+          }
+        });
+      } else {
+        throw new Error();
+      }
     }
   });
 
