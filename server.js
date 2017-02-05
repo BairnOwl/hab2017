@@ -47,7 +47,7 @@ app.post('/create/user/', function(req, res) {
     var request = new XMLHttpRequest();
     request.open('POST', url, true);
 
-    request.addEventListener('load', function(e){
+    request.addEventListener('load', function(e) {
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
             console.log(data._id);
