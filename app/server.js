@@ -10,7 +10,7 @@ var http = require('http');
 
 var engines = require('consolidate');
 app.engine('html', engines.hogan);
-app.set('views', __dirname + '/templates');
+app.set('views', __dirname );
 app.use(express.static(__dirname));
 //app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:false}));
@@ -35,13 +35,11 @@ app.get('/bower_components/:folder/:file', function (req, res) {
     res.render('bower_components/' + req.params.folder+'/'+req.params.file);
 });
 
+
 // USER ROUTES
 
 // Creates a new user
 app.post('/create/user/', function(req, res) {
-
-    console.log(req.body);
-
     var username = req.body.username;
     var password = req.body.password;
 
@@ -57,11 +55,11 @@ app.post('/create/user/', function(req, res) {
     request.open('POST', url, true);
 
     request.addEventListener('load', function(e){
-        console.log('loaded');
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
-            console.log(data);
-            res.json(data);
+            console.log(data._id);
+            res.render('user-home.html', { userId: data._id });
+            console.log("nooooooo");
         }
     }, false);
 
@@ -100,9 +98,9 @@ app.post('/create/story/', function(req, res) {
 
     var userID = req.body.userID;
     var title = req.body.title;
-    
+
     var j = {
-      "title": title  
+        "title": title
     };
 
     var url = '/users/' + userID + '/stories';
@@ -224,7 +222,7 @@ app.get('/view/user/:userId/stories/:storyId/character/:characterId', function(r
     var userId = request.params.userId;
     var storyId = request.params.storyId;
     var characterId = request.params.characterId;
-    
+
     var url = '/users/' + userId + '/stories/' + storyID + '/characters/' + characterId;
 
     // connect to database

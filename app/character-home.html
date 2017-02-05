@@ -18,7 +18,7 @@
 
     <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="My Story">
+    <meta name="application-name" content="My App">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -89,7 +89,7 @@
         margin-left: 50px;
     }
 
-    #characters {
+    #questions {
         transition: margin-left .5s;
         padding: 16px;
         position: absolute;
@@ -119,12 +119,13 @@
     <span style="font-size:15px;cursor:pointer" onclick="openNav()">INSERT IMAGE HERE</span>
 </div>
 
-<div id="characters">
-    <h2>My Characters</h2>
+<div id="questions">
+    <h2>Character Interview</h2>
     <!--GET STORIES--->
-    <ul>{{#character}}
-        <li><h3>{{character.title}}</h3></li>
-        {{/character}}</ul>
+    <ul>{{#question}}
+        <li><h3>{{question.title}}</h3></li>
+        <li><h3>{{question.answer}}</h3></li>
+        {{/question}}</ul>
     <div></div>
 </div>
 
