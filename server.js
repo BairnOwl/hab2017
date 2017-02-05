@@ -38,9 +38,6 @@ app.get('/bower_components/:folder/:file', function (req, res) {
 
 // Creates a new user
 app.post('/create/user/', function(req, res) {
-
-    console.log(req.body);
-
     var username = req.body.username;
     var password = req.body.password;
 
@@ -56,11 +53,11 @@ app.post('/create/user/', function(req, res) {
     request.open('POST', url, true);
 
     request.addEventListener('load', function(e){
-        console.log('loaded');
+        
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
-            console.log(data);
-            res.json(data);
+            console.log(data._id);
+            res.render('user-home.html', { userId: data._id});
         }
     }, false);
 
