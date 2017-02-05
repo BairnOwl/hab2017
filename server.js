@@ -10,7 +10,7 @@ var http = require('http');
 
 var engines = require('consolidate');
 app.engine('html', engines.hogan);
-app.set('views', __dirname + '/app');
+app.set('views', __dirname + '/templates');
 app.use(express.static('public'));
 
 var server = http.createServer(app);
@@ -21,6 +21,14 @@ app.get('/', function (req, res) {
     res.render('index.html');
 });
 
+app.get('/src/:file', function (req, res) {
+    res.render('src/'+req.params.file);
+});
+
+app.get('/bower_components/:folder/:file', function (req, res) {
+    res.render('bower_components/'+req.params.folder+'/'+req.params.file);
+});
+
 // USER ROUTES
 
 // Creates a new user
@@ -28,6 +36,8 @@ app.post('/create/user/', function(req, res) {
 
     var username = req.body.username;
     var password = req.body.pass;
+
+    console.log(username);
     var j = {
         "username": username,
         "password": password
@@ -54,7 +64,7 @@ app.get('/view/user/:userID', function(req, res) {
 
     var userId = req.params.userId;
     var j = {
-        "userId": userId,
+        "userId": userId
     };
 
     var url = '/users/' + userID;
