@@ -4,12 +4,12 @@
 
 
 window.addEventListener('load', function(){
-    $('#form').on('submit', sendMessage);
+    //$('#form').on('submit', sendMessage);
 }, false);
 
 function sendMessage(e) {
     // prevent the page from redirecting
-    e.preventDefault();
+    //e.preventDefault();
 
     // get the parameters
     var username = $('#username').val();
@@ -24,12 +24,11 @@ function sendMessage(e) {
     req.open('POST', '/create/user', true);
     req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-    // req.onreadystateexchange = function(e) {
-    //     if (req.readyState == 4 && req.status == 200){
-    //         response = JSON.parse(req.responseText);
-    //
-    //     }
-    // };
+     req.onreadystatechange = function(e) {
+        if (req.readyState == 4 && req.status == 200){
+            response = req.responseText;
+        }
+    };
 
     req.send(post_string);
 }

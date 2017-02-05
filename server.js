@@ -14,6 +14,9 @@ app.set('views', __dirname + '/templates');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:false}));
 
+//app.set('view engine', 'html');
+//app.engine('html', require('hogan-express'));
+
 var server = http.createServer(app);
 
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
@@ -25,9 +28,13 @@ app.get('/', function (req, res) {
     res.render('index.html');
 });
 
-app.get('/bower_components/:folder/:file', function (req, res) {
-    res.render('bower_components/' + req.params.folder+'/'+req.params.file);
+app.get('/user/home', function (req, res) {
+    res.render('user-home.html');
 });
+
+// app.get('/bower_components/:folder/:file', function (req, res) {
+//     res.render('bower_components/' + req.params.folder+'/'+req.params.file);
+// });
 
 // USER ROUTES
 
@@ -51,8 +58,8 @@ app.post('/create/user/', function(req, res) {
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
             console.log(data._id);
+
             res.render('user-home.html', { userId: data._id });
-            console.log("nooooooo");
         }
     }, false);
 
@@ -60,7 +67,7 @@ app.post('/create/user/', function(req, res) {
 });
 
 // Gets info for a specific user
-app.get('/view/user/:userID', function(req, res) {
+app.get('/view/user/:userId', function(req, res) {
 
     var userId = req.params.userId;
     var j = {
