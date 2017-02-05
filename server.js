@@ -21,6 +21,14 @@ app.get('/', function (req, res) {
     res.render('index.html');
 });
 
+app.get('/src/:file', function (req, res) {
+    res.render('src/'+req.params.file);
+});
+
+app.get('/bower_components/:folder/:file', function (req, res) {
+    res.render('bower_components/'+req.params.folder+'/'+req.params.file);
+});
+
 // USER ROUTES
 
 // Creates a new user
