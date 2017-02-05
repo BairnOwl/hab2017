@@ -12,14 +12,15 @@ var engines = require('consolidate');
 app.engine('html', engines.hogan);
 app.set('views', __dirname + '/templates');
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({extended:false}));
 
 var server = http.createServer(app);
 
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-// app.get('/', function (req, res) {
-//     res.render('index.html');
-// });
+app.get('/', function (req, res) {
+    res.render('index.html');
+});
 
 app.get('/', function (req, res) {
     //res.sendFile('index.html', {root: '.'});

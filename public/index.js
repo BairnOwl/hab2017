@@ -15,6 +15,10 @@ function sendMessage(e) {
     var username = $('#username').val();
     var password = $('#password').val();
     var post_string = "username=" + username + "&password=" + password;
+
+    $.post("/create/user", {username:username,password:password}, function() {
+        console.log("?");
+    })
     
     console.log(post_string);
     // send it to the server

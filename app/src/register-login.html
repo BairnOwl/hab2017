@@ -26,7 +26,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <iron-localstorage name="user-storage" value="{{storedUser}}"></iron-localstorage>
     <iron-ajax
             id="registerLoginAjax"
             method="post"
@@ -36,14 +35,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             on-error="handleUserError"></iron-ajax>
 
     <div class="card">
-      <div id="unauthenticated" hidden$="[[storedUser.loggedin]]>
+      <div id="unauthenticated">
         <h1>Log In</h1>
 
         <p><strong>Log in</strong> or <strong>sign up</strong> to start writing!</p>
 
-        <template is="dom-if" if="[[error]]">
-          <p class="alert-error"><strong>Error:</strong> [[error]]</p>
-        </template>
+
 
         <paper-input-container>
           <label>Username</label>
