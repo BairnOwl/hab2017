@@ -88,7 +88,16 @@ db.once('open', function() {
     method: 'GET',
     path: '/users/{id}/stories',
     handler: function (request, reply) {
-      reply("Success!")
+      User.findById(request.params.id, (err, user) => {
+        if (err) {
+          throw err;
+        } else{
+          let stories = user.storyIds.map((sid) => {
+            return Story.findById(sid)
+          })
+          reply(stories.toJSON());
+        }
+      })
     }
   });
 
@@ -98,7 +107,7 @@ db.once('open', function() {
       method: 'GET',
       path: '/users/{id}/stories/{storyId}',
       handler: function (request, reply) {
-        Story.findById(request.params.id, (err, story) => {
+        Story.findById(request.params.storyId, (err, story) => {
           if (err) {
             throw err;
           } else{
@@ -174,7 +183,16 @@ db.once('open', function() {
     method: 'GET',
     path: '/users/{id}/stories/{storyId}/characters',
     handler: function (request, reply) {
-      reply("Success!")
+      Story.findById(request.params.storyId, (err, story) => {
+        if (err) {
+          throw err;
+        } else{
+          let chars = story.chars.map((cid) => {
+            return Character.findById(cid)
+          })
+          reply(chars.toJSON());
+        }
+      })
     }
   });
 
@@ -183,11 +201,11 @@ db.once('open', function() {
       method: 'GET',
       path: '/users/{id}/stories/{storyId}/characters/{charId}',
       handler: function (request, reply) {
-        Story.findById(request.params.id, (err, story) => {
+        Character.findById(request.params.charId, (err, char) => {
           if (err) {
             throw err;
           } else{
-            reply(story.toJSON());
+            reply(char.toJSON());
           }
         })
       }
@@ -267,15 +285,24 @@ db.once('open', function() {
   });
 
 
+
   //  Answer ROUTES
   // GET ALL answered questions FOR A GIVEN CHARACTER
   server.route({
     method: 'GET',
     path: '/users/{id}/stories/{storyId}/characters/{charId}/answers',
     handler: function (request, reply) {
-      reply("Success!")
+      Character.findById(request.params.charId, (err, char) => {
+        if (err) {
+          throw err;
+        } else{
+          reply(char.questionAnswer.toJSON());
+        }
+        }
+      )
     }
   });
+  //??????
 
   // GET A SPECIFIC {Question, Answer} pair FOR A GIVEN Character and Question
   server.route({
