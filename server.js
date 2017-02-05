@@ -9,20 +9,21 @@ var bodyParser = require('body-parser');
 var http = require('http');
 
 var engines = require('consolidate');
-app.engine('html', engines.hogan);
-app.set('views', __dirname + '/app');
-app.use(express.static('public'));
+//app.engine('html', engines.hogan);
+//app.set('views', __dirname + '/app');
+app.use(express.static(__dirname));
 
 var server = http.createServer(app);
 
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-app.get('/', function (req, res) {
-    res.render('index.html');
-});
+// app.get('/', function (req, res) {
+//     res.render('index.html');
+// });
 
-app.get('/src/:file', function (req, res) {
-    res.render('src/'+req.params.file);
+app.get('/', function (req, res) {
+    //res.sendFile('index.html', {root: '.'});
+    res.send("hello world");
 });
 
 app.get('/bower_components/:folder/:file', function (req, res) {
