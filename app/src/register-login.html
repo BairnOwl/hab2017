@@ -26,6 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
+    <iron-localstorage name="user-storage" value="{{storedUser}}"></iron-localstorage>
     <iron-ajax
             id="registerLoginAjax"
             method="post"
@@ -35,10 +36,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             on-error="handleUserError"></iron-ajax>
 
     <div class="card">
-      <div id="unauthenticated">
+      <div id="unauthenticated" hidden$="[[storedUser.loggedin]]>
         <h1>Log In</h1>
 
         <p><strong>Log in</strong> or <strong>sign up</strong> to start writing!</p>
+
+        <template is="dom-if" if="[[error]]">
+          <p class="alert-error"><strong>Error:</strong> [[error]]</p>
+        </template>
 
         <paper-input-container>
           <label>Username</label>
@@ -56,6 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
       </div>
     </div>
+
   </template>
 
   <script>
@@ -71,25 +77,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
         _setReqBody: function() {
             this.$.registerLoginAjax.body = this.formData;
+            console.log("DATA: " + this.formData.username);
         },
         postLogin: function() {
-            this.$.registerLoginAjax.url = 'http://localhost:3001/sessions/create';
+            this.$.registerLoginAjax.url = '/create/user';
             this._setReqBody();
             this.$.registerLoginAjax.generateRequest();
         },
         postRegister: function() {
-            this.$.registerLoginAjax.url = 'http://localhost:3001/users';
+            this.$.registerLoginAjax.url = '/create/user';
             this._setReqBody();
             this.$.registerLoginAjax.generateRequest();
         },
         handleUserResponse: function(event) {
+                console.log("Hello world ");
+                console.log(event.detail.response);
             var response = JSON.parse(event.detail.response);
 
             if (response.id_token) {
                 this.error = '';
                 this.storedUser = {
-                    name: this.formData.username,
-                    token: response.id_token,
+                    username: this.formData.username,
+                    password: this.formData.password,
                     loggedin: true
                 };
             }

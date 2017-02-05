@@ -35,6 +35,9 @@ app.get('/bower_components/:folder/:file', function (req, res) {
 // Creates a new user
 app.post('/create/user/', function(req, res) {
 
+    //console.log(req.body);
+    //console.log(req);
+    //console.log(res);
     var username = req.body.username;
     var password = req.body.pass;
     var j = {
