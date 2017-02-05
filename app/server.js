@@ -12,8 +12,11 @@ var engines = require('consolidate');
 app.engine('html', engines.hogan);
 app.set('views', __dirname );
 app.use(express.static(__dirname));
-//app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:false}));
+
+app.engine('html', require('hogan-express'));
+app.set('view engine', 'html');
+
 
 var server = http.createServer(app);
 
@@ -23,13 +26,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
+    //res.render('index.html');
     res.render('index.html');
 });
 
-app.get('/', function (req, res) {
-    //res.sendFile('index.html', {root: '.'});
-    res.send("hello world");
-});
+// app.get('/', function (req, res) {
+//     //res.sendFile('index.html', {root: '.'});
+//     res.send("hello world");
+// });
 
 app.get('/bower_components/:folder/:file', function (req, res) {
     res.render('bower_components/' + req.params.folder+'/'+req.params.file);
@@ -58,8 +62,9 @@ app.post('/create/user/', function(req, res) {
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
             console.log(data._id);
-            res.render('userHome', { userId: data._id });
+            res.render('/', { userId: data._id });
             console.log("nooooooo");
+            res.redirect('/');
         }
     }, false);
 
