@@ -185,9 +185,27 @@ db.once('open', function() {
   */
   server.route({
     method: 'POST',
-    path: '/users/{id}/stories/{storyId}/characters',
+    path: '/users/{id}/stories/{id}/characters',
     handler: function (request, reply) {
-      reply("Success!")
+      let newChar = new Character({title: "Mystery Man", questionAnswer: []});
+      newChar.save((err, char) => {
+        if (err) {
+          throw err;
+        } else {
+          let req = {
+            method: 'PUT',
+            url: '/users/{id}/stories/{id}',
+            payload: JSON.stringify({'charId': char.id})
+          }
+          server.inject(req, (res) => {
+            if(res.statusCode == 200){
+              reply(char.toJSON())  
+            }else{
+              reply(res)
+            }
+          })
+        }
+      });
     }
   });
 
