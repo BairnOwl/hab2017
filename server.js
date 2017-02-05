@@ -10,7 +10,7 @@ var http = require('http');
 
 var engines = require('consolidate');
 app.engine('html', engines.hogan);
-app.set('views', __dirname + '/templates');
+app.set('views', __dirname + '/app');
 app.use(express.static('public'));
 
 var server = http.createServer(app);
