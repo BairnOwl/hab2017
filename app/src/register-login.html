@@ -28,7 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-ajax
             id="registerLoginAjax"
-            method="post"
+            method="POST"
             content-type="application/json"
             handle-as="text"
             on-response="handleUserResponse"
@@ -39,6 +39,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <h1>Log In</h1>
 
         <p><strong>Log in</strong> or <strong>sign up</strong> to start writing!</p>
+
+
 
         <paper-input-container>
           <label>Username</label>
@@ -56,6 +58,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
       </div>
     </div>
+
   </template>
 
   <script>
@@ -71,31 +74,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
         _setReqBody: function() {
             this.$.registerLoginAjax.body = this.formData;
+            console.log("DATA: " + this.formData.username);
         },
         postLogin: function() {
-            this.$.registerLoginAjax.url = 'http://localhost:3001/sessions/create';
-            this._setReqBody();
-            this.$.registerLoginAjax.generateRequest();
+            var req = new XMLHttpRequest();
+            var str = "username=" + this.formData.username + "&password=" + this.formData.password;
+            console.log(req);
+            req.open('POST', '/create/user', true);
+            req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            req.send(str);
+            console.log(str);
         },
         postRegister: function() {
-            this.$.registerLoginAjax.url = 'http://localhost:3001/users';
-            this._setReqBody();
-            this.$.registerLoginAjax.generateRequest();
+            var req = new XMLHttpRequest();
+            var str = "username=" + this.formData.username + "&password=" + this.formData.password;
+            console.log(req);
+            req.open('POST', '/create/user', true);
+            req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            req.send(str);
+            console.log(str);
         },
         handleUserResponse: function(event) {
             var response = JSON.parse(event.detail.response);
+            console.log(response);
 
             if (response.id_token) {
                 this.error = '';
                 this.storedUser = {
-                    name: this.formData.username,
-                    token: response.id_token,
+                    username: this.formData.username,
+                    password: this.formData.password,
                     loggedin: true
                 };
             }
 
             // reset form data
-            this.formData = {};
+            //this.formData = {};
         },
         handleUserError: function(event) {
             this.error = event.detail.request.xhr.response;

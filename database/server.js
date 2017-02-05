@@ -1,5 +1,3 @@
-'use strict';
-
 const Hapi = require('hapi');
 const mongoose = require('mongoose');
 const User = require('./models/User.js');
@@ -14,6 +12,8 @@ server.connection({ port: process.env.PORT || 3000,
 mongoose.connect(process.env.MONGO_URL || 'mongodb://hab2017:hab2017@ds049624.mlab.com:49624/coledev');
 
 let db = mongoose.connection;
+
+//server.
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -48,7 +48,14 @@ db.once('open', function() {
     method: 'POST',
     path: '/users',
     handler: function (request, reply) {
-      let newUser = new User({username:"Cole",password:"pass"});
+
+      var body = JSON.parse(request.payload);
+
+      let newUser = new User({username: body.username, password: body.password});
+
+      console.log(body);
+      console.log(body.username);
+
       newUser.save((err, user) => {
         if (err) {
           throw err;

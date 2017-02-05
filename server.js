@@ -12,47 +12,47 @@ var engines = require('consolidate');
 app.engine('html', engines.hogan);
 app.set('views', __dirname + '/templates');
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({extended:false}));
 
 var server = http.createServer(app);
 
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 app.get('/', function (req, res) {
     res.render('index.html');
 });
 
-app.get('/src/:file', function (req, res) {
-    res.render('src/'+req.params.file);
-});
-
 app.get('/bower_components/:folder/:file', function (req, res) {
-    res.render('bower_components/'+req.params.folder+'/'+req.params.file);
+    res.render('bower_components/' + req.params.folder+'/'+req.params.file);
 });
 
 // USER ROUTES
 
 // Creates a new user
 app.post('/create/user/', function(req, res) {
-
     var username = req.body.username;
-    var password = req.body.pass;
+    var password = req.body.password;
 
-    console.log(username);
     var j = {
         "username": username,
         "password": password
     };
 
-    var url = '/users';
+    var url = 'http://localhost:3000/users';
 
     // connect to database
     var request = new XMLHttpRequest();
     request.open('POST', url, true);
 
-    request.addEventListener('load', function(e){
+    request.addEventListener('load', function(e) {
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
-            res.json(data);
+            console.log(data._id);
+            res.render('user-home.html', { userId: data._id });
+            console.log("nooooooo");
         }
     }, false);
 
