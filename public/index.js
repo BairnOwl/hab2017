@@ -15,10 +15,6 @@ function sendMessage(e) {
     var username = $('#username').val();
     var password = $('#password').val();
     var post_string = "username=" + username + "&password=" + password;
-
-    $.post("/create/user", {username:username,password:password}, function() {
-        console.log("?");
-    })
     
     console.log(post_string);
     // send it to the server
@@ -26,8 +22,14 @@ function sendMessage(e) {
     console.log(req);
 
     req.open('POST', '/create/user', true);
-    //req.server.open('get', this.url, true);
     req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    req.onreadystatechange = function(e) {
+        if (req.readyState == 4 && req.status == 200){
+            response = JSON.parse(req.responseText);
+            
+        }
+    };
 
     req.send(post_string);
 }
