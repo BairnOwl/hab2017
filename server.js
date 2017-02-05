@@ -59,7 +59,8 @@ app.post('/create/user/', function(req, res) {
     request.addEventListener('load', function(e) {
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
-            res.render('user-home.html', { userId: data._id });
+            console.log(username);
+            res.render('user-home.html', { userId: data._id, username: username });
         }
     }, false);
 
