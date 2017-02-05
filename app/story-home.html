@@ -18,7 +18,7 @@
 
     <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="My App">
+    <meta name="application-name" content="My Story">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -110,12 +110,12 @@
     <span style="font-size:15px;cursor:pointer" onclick="openNav()">INSERT IMAGE HERE</span>
 </div>
 
-<div id="stories">
-    <h2>My Stories</h2>
+<div id="characters">
+    <h2>My Characters</h2>
     <!--GET STORIES--->
-    <ul>{{#book}}
-        <li><h3>{{book.title}}</h3></li>
-        {{/book}}</ul>
+    <ul>{{#character}}
+        <li><h3>{{character.title}}</h3></li>
+        {{/character}}</ul>
     <div></div>
 </div>
 
