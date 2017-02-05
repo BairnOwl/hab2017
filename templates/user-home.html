@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
     <meta charset="utf-8">
     <meta name="generator" content="Polymer Starter Kit">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
@@ -44,6 +46,7 @@
     body {
         font-family: "Lato", sans-serif;
         transition: background-color .5s;
+        text-align: center;
     }
 
     .sidenav {
@@ -100,13 +103,21 @@
     }
 
     #newStory {
-        text-align:center;
+        width: 250px;
+        margin: auto;
     }
 
     @media screen and (max-height: 450px) {
         .sidenav {padding-top: 15px;}
         .sidenav a {font-size: 18px;}
     }
+
+    img {
+        width: 50px;
+        height: 50px;
+    }
+
+
 
 </style>
 
@@ -118,19 +129,20 @@
     <a href="#">Log Out</a>
 </div>
 
-<div id="header"><h3>Know Thy Self</h3><hr></div>
+<div id="header"><h3>PersonaChat</h3><hr></div>
 
 <div id="main {{userId}}">
     <!---<img user="">--->
-    <h4>User Name</h4>
-    <span style="font-size:15px;cursor:pointer" onclick="openNav()">INSERT IMAGE HERE</span>
+    <h4>Username: {{username}}</h4>
+    <span style="font-size:15px;cursor:pointer" onclick="openNav()"><img src="http://1plusx.com/app/mu-plugins/all-in-one-seo-pack-pro/images/default-user-image.png"></span>
+
 </div>
 
 <div id="newStory">
     <form action="/create/story" method="POST">
-        <input type="text" name="title" />
-        <input type="hidden" name="userId" value="{{userId}}" />
-        <input type="submit" name="newStory" value="New Story?" />
+        <input class="form-control" type="text" name="title" />
+        <input class="form-control" type="hidden" name="userId" value="{{userId}}" />
+        <input class="btn btn-primary" type="submit" name="newStory" value="New Story?" />
     </form>
 </div>
 

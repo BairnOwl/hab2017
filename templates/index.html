@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>hab2017</title>
     <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
     <link rel="import" href="login-form/login-form.html">
 </head>
+<style>
+
+    body {
+        text-align: center;
+    }
+
+    #box {
+     width: 250px;
+    margin: auto;
+    }
+
+</style>
 <body>
 
     <!---HTML STUFF-->
@@ -13,11 +26,15 @@
     <!--<login-form username="J.R.R. Tolkein"></login-form>-->
     <!--<login-form username="J.R.R. Tolkein" password="123456" handler="http://www.google.com" failed="true"></login-form>-->
 
+    <h1>PersonaChat</h1>
+    <h3>Please Login with a username and password:</h3>
+    <hr>
+    <div id="box">
     <form action="/create/user" method="POST" id="form">
-        <input type="text" name="username" id="username">
-        <input type="text" name="password" id="password">
-        <input type="submit" value="Send">
-    </form>
+        <input  class="form-control" type="text" name="username" id="username">
+        <input class="form-control" type="text" name="password" id="password">
+        <input class="btn btn-primary" type="submit" value="Send" id="submit">
+    </form></div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="index.js"></script>

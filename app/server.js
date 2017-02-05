@@ -62,7 +62,7 @@ app.post('/create/user/', function(req, res) {
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
             console.log(data._id);
-            res.render('/', { userId: data._id });
+            res.render('/', { userId: data._id, username:username });
             console.log("nooooooo");
             res.redirect('/');
         }
