@@ -36,26 +36,112 @@
     <meta name="msapplication-TileImage" content="/images/manifest/icon-144x144.png">
     <meta name="msapplication-TileColor" content="#3f51b5">
     <meta name="msapplication-tap-highlight" content="no">
-
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Roboto', 'Noto', sans-serif;
-            line-height: 1.5;
-            min-height: 100vh;
-            background-color: #eeeeee;
-        }
-    </style>
 </head>
+
 <body>
 
-<div id="main">
-    <h2>Sidenav Push Example</h2>
-    <p>Click on the element below to open the side navigation menu, and push this content to the right. Notice that we add a black see-through background-color to body when the sidenav is opened.</p>
-    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
+<style>
+    body {
+        font-family: "Lato", sans-serif;
+        transition: background-color .5s;
+    }
+
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s
+    }
+
+    .sidenav a:hover, .offcanvas a:focus{
+        color: #f1f1f1;
+    }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+
+    #main {
+        transition: margin-left .5s;
+        padding: 16px;
+        position: absolute;
+        top: 50px;
+        left: 25px;
+        margin-left: 50px;
+    }
+
+    #stories {
+        transition: margin-left .5s;
+        padding: 16px;
+        position: absolute;
+        top: 50px;
+        right: 25px;
+        margin-left: 50px;
+    }
+
+    #newStory {
+        text-align:center;
+    }
+
+    @media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+        .sidenav a {font-size: 18px;}
+    }
+
+</style>
+
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="#">My Account</a>
+    <a href="#">My Stories</a>
+    <a href="#">FAQ</a>
+    <a href="#">Log Out</a>
 </div>
 
-{{userId}}
+<div id="header"><h3>Know Thy Self</h3><hr></div>
+
+<div id="main {{userId}}">
+    <!---<img user="">--->
+    <h4>User Name</h4>
+    <span style="font-size:15px;cursor:pointer" onclick="openNav()">INSERT IMAGE HERE</span>
+</div>
+
+<div id="newStory">
+    <form action="/create/story" method="POST">
+        <input type="text" name="title" />
+        <input type="hidden" name="userId" value="{{userId}}" />
+        <input type="submit" name="newStory" value="New Story?" />
+    </form>
+</div>
+
+<div id="stories">
+    <h2>My Stories</h2>
+    <!--GET STORIES--->
+    <ul>{{#book}}
+        <li><h3>{{book.title}}</h3></li>
+        {{/book}}</ul>
+    <div></div>
+</div>
 
 <script>
     function openNav() {

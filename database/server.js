@@ -48,13 +48,9 @@ db.once('open', function() {
     method: 'POST',
     path: '/users',
     handler: function (request, reply) {
-
       var body = JSON.parse(request.payload);
-
+      
       let newUser = new User({username: body.username, password: body.password});
-
-      console.log(body);
-      console.log(body.username);
 
       newUser.save((err, user) => {
         if (err) {
@@ -134,7 +130,12 @@ db.once('open', function() {
     method: 'POST',
     path: '/users/{id}/stories',
     handler: function (request, reply) {
-      let newStory = new Story({title: "Love Life"});
+      var body = JSON.parse(request.payload);
+      
+      let newStory = new Story({title: body.title});
+
+      console.log(newStory);
+
       newStory.save((err, story) => {
         if (err) {
           throw err;

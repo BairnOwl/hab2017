@@ -59,8 +59,6 @@ app.post('/create/user/', function(req, res) {
     request.addEventListener('load', function(e) {
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
-            console.log(data._id);
-
             res.render('user-home.html', { userId: data._id });
         }
     }, false);
@@ -98,22 +96,25 @@ app.get('/view/user/:userId', function(req, res) {
 // Creates a new story
 app.post('/create/story/', function(req, res) {
 
-    var userID = req.body.userID;
+    var userId = req.body.userId;
     var title = req.body.title;
     
     var j = {
       "title": title  
     };
 
-    var url = '/users/' + userID + '/stories';
+    var url = '/users/' + userId + '/stories';
+    console.log(url);
 
     // connect to database
     var request = new XMLHttpRequest();
     request.open('POST', url, true);
 
-    request.addEventListener('load', function(e){
+    request.addEventListener('load', function(e) {
+        console.log('loaded');
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
+            console.log(data);
             res.json(data);
         }
     }, false);
