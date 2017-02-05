@@ -10,7 +10,7 @@ var http = require('http');
 
 var engines = require('consolidate');
 app.engine('html', engines.hogan);
-app.set('views', __dirname + '/app');
+app.set('views', __dirname + '/templates');
 app.use(express.static('public'));
 
 var server = http.createServer(app);
@@ -28,6 +28,8 @@ app.post('/create/user/', function(req, res) {
 
     var username = req.body.username;
     var password = req.body.pass;
+
+    console.log(username);
     var j = {
         "username": username,
         "password": password
