@@ -26,7 +26,13 @@ db.once('open', function() {
       method: 'GET',
       path: '/users/{id}',
       handler: function (request, reply) {
-        reply("yo");
+        User.findById(request.params.id, (err, user) => {
+          if (err) {
+            throw err;
+          } else{
+            reply(user.toJSON());
+          }
+        })
       }
   });
 
@@ -53,6 +59,39 @@ db.once('open', function() {
     }
   });
 
+  // CREATE NEW STORY FOR A GIVEN USER
+  // send json as follows:
+  /*
+    {
+      "title" : "My novel"
+    }
+  */
+  server.route({
+    method: 'POST',
+    path: '/users/{id}/stories',
+    handler: function (request, reply) {
+      let newStory = new Story({title: "Love Life"});
+      newStory.save((err, story) => {
+        if (err) {
+          throw err;
+        } else {
+          let req = {
+            method: 'PUT',
+            url: `/users/${request.params.id}`,
+            payload: JSON.stringify({'storyId': story.id})
+          }
+          server.inject(req, (res) => {
+            if (res.statusCode == 200) {
+              reply(story.toJSON())
+            } else {
+              reply(res)
+            }
+          })
+        }
+      });
+    }
+  });
+
   // UPDATE USER'S STORIES
   // ADD STORY ID
   // send json as follows:
@@ -72,7 +111,41 @@ db.once('open', function() {
     method: 'PUT',
     path: '/users/{id}',
     handler: function (request, reply) {
-      reply("Success!")
+      var id = request.params.id;
+      console.log(request.params.id);
+      if (request.payload && request.payload.storyId) {
+        User.findById(id, (err, user) => {
+          if (err) {
+            throw err;
+          } else {
+            user.storyIds.push(request.payload.storyId);
+            user.save((err, user) => {
+              if (err) {
+                throw err;
+              } else {
+                reply(user.toJSON());
+              }
+            })
+          }
+        })
+      } else if (request.payload && request.payload.storyIds) {
+        User.findById(id, (err, user) => {
+          if (err) {
+            throw err;
+          } else {
+            user.storyIds = request.payload.storyIds;
+            user.save((err, user) => {
+              if (err) {
+                throw err;
+              } else {
+                reply(user.toJSON());
+              }
+            })
+          }
+        })
+      } else {
+        throw new Error("bad data");
+      }
     }
   });
 
@@ -82,51 +155,33 @@ db.once('open', function() {
     method: 'GET',
     path: '/users/{id}/stories',
     handler: function (request, reply) {
-      reply("Success!")
+      User.findById(request.params.id, (err, user) => {
+        if (err) {
+          throw err;
+        } else{
+          let stories = user.storyIds.map((sid) => {
+            return Story.findById(sid)
+          })
+          reply(stories.toJSON());
+        }
+      })
     }
   });
 
   // STORY ROUTES
   // GET A SPECIFIC STORY FOR A GIVEN USER
   server.route({
-    method: 'GET',
-    path: '/users/{id}/stories/{storyId}',
-    handler: function (request, reply) {
-      reply("Success!")
-    }
-  });
-
-  // CREATE NEW STORY FOR A GIVEN USER
-  // send json as follows:
-  /*
-    {
-      "title" : "My novel"
-    }
-  */
-  server.route({
-    method: 'POST',
-    path: '/users/{id}/stories',
-    handler: function (request, reply) {
-      let newStory = new Story(title: "Love Life");
-      newStory.save((err, story) => {
-        if (err) {
-          throw err;
-        } else {
-          let req = {
-            method: 'PUT',
-            url: '/users/{id}',
-            payload: JSON.stringify({'storyId': story.id})
+      method: 'GET',
+      path: '/users/{id}/stories/{storyId}',
+      handler: function (request, reply) {
+        Story.findById(request.params.storyId, (err, story) => {
+          if (err) {
+            throw err;
+          } else{
+            reply(story.toJSON());
           }
-          server.inject(req, (res) => {
-            if(res.statusCode == 200){
-              reply(story.toJSON())  
-            }else{
-              reply(res)
-            }
-          })
-        }
-      });
-    }
+        })
+      }
   });
 
   // UPDATE A SPECIFIC STORY FOR A GIVEN USER
@@ -162,17 +217,32 @@ db.once('open', function() {
     method: 'GET',
     path: '/users/{id}/stories/{storyId}/characters',
     handler: function (request, reply) {
-      reply("Success!")
+      Story.findById(request.params.storyId, (err, story) => {
+        if (err) {
+          throw err;
+        } else{
+          let chars = story.chars.map((cid) => {
+            return Character.findById(cid)
+          })
+          reply(chars.toJSON());
+        }
+      })
     }
   });
 
   // GET A SPECIFIC CHARACTER FOR A GIVEN STORY AND USER
   server.route({
-    method: 'GET',
-    path: '/users/{id}/stories/{storyId}/characters/{charId}',
-    handler: function (request, reply) {
-      reply("Success!")
-    }
+      method: 'GET',
+      path: '/users/{id}/stories/{storyId}/characters/{charId}',
+      handler: function (request, reply) {
+        Character.findById(request.params.charId, (err, char) => {
+          if (err) {
+            throw err;
+          } else{
+            reply(char.toJSON());
+          }
+        })
+      }
   });
 
   // CREATE NEW CHARACTER FOR A GIVEN STORY AND USER
@@ -185,7 +255,7 @@ db.once('open', function() {
   */
   server.route({
     method: 'POST',
-    path: '/users/{id}/stories/{id}/characters',
+    path: '/users/{id}/stories/{storyId}/characters',
     handler: function (request, reply) {
       let newChar = new Character({title: "Mystery Man", questionAnswer: []});
       newChar.save((err, char) => {
@@ -194,12 +264,12 @@ db.once('open', function() {
         } else {
           let req = {
             method: 'PUT',
-            url: '/users/{id}/stories/{id}',
+            url: '/users/{id}/stories/{StoryId}',
             payload: JSON.stringify({'charId': char.id})
           }
           server.inject(req, (res) => {
             if(res.statusCode == 200){
-              reply(char.toJSON())  
+              reply(char.toJSON())
             }else{
               reply(res)
             }
@@ -235,12 +305,20 @@ db.once('open', function() {
     }
   */
   server.route({
-    method: 'PUT',
-    path: '/users/{id}/stories/{storyId}/characters/{charId}',
-    handler: function (request, reply) {
-      reply("Success!")
-    }
+    //TODO
+      method: 'PUT',
+      path: '/users/{id}/stories/{storyId}/characters/{charId}',
+      handler: function (request, reply) {
+        Character.findById(request.params.id, (err, char) => {
+          if (err) {
+            throw err;
+          } else{
+            reply(char.toJSON());
+          }
+        })
+      }
   });
+
 
 
   //  Answer ROUTES
@@ -249,9 +327,17 @@ db.once('open', function() {
     method: 'GET',
     path: '/users/{id}/stories/{storyId}/characters/{charId}/answers',
     handler: function (request, reply) {
-      reply("Success!")
+      Character.findById(request.params.charId, (err, char) => {
+        if (err) {
+          throw err;
+        } else{
+          reply(char.questionAnswer.toJSON());
+        }
+        }
+      )
     }
   });
+  //??????
 
   // GET A SPECIFIC {Question, Answer} pair FOR A GIVEN Character and Question
   server.route({
@@ -275,11 +361,17 @@ db.once('open', function() {
 
   // GET A SPECIFIC Question
   server.route({
-    method: 'GET',
-    path: '/questions/{questId}',
-    handler: function (request, reply) {
-      reply("Success!")
-    }
+      method: 'GET',
+      path: '/questions/{questId}',
+      handler: function (request, reply) {
+        Question.findById(request.params.id, (err, quest) => {
+          if (err) {
+            throw err;
+          } else{
+            reply(quest.toJSON());
+          }
+        })
+      }
   });
 
   // CREATE NEW Question
@@ -293,7 +385,14 @@ db.once('open', function() {
     method: 'POST',
     path: '/questions',
     handler: function (request, reply) {
-      reply("Success!")
+      let newQuest = new Question({questText: "Do you like yourself?", isStandard: true, weight: 0});
+      newQuest.save((err, quest) => {
+        if (err) {
+          throw err;
+        } else {
+          reply(quest.toJSON());
+        }
+      });
     }
   });
 

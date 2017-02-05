@@ -9,9 +9,9 @@ var bodyParser = require('body-parser');
 var http = require('http');
 
 var engines = require('consolidate');
-//app.engine('html', engines.hogan);
-//app.set('views', __dirname + '/app');
-app.use(express.static(__dirname));
+app.engine('html', engines.hogan);
+app.set('views', __dirname + '/templates');
+app.use(express.static('public'));
 
 var server = http.createServer(app);
 
@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/bower_components/:folder/:file', function (req, res) {
-    res.render('bower_components/'+req.params.folder+'/'+req.params.file);
+    res.render('bower_components/' + req.params.folder+'/'+req.params.file);
 });
 
 // USER ROUTES
@@ -35,8 +35,13 @@ app.get('/bower_components/:folder/:file', function (req, res) {
 // Creates a new user
 app.post('/create/user/', function(req, res) {
 
+    console.log(req);
+    console.log("-------------------------");
+    console.log(req.body);
+
     var username = req.body.username;
-    var password = req.body.pass;
+    var password = req.body.password;
+
     var j = {
         "username": username,
         "password": password
