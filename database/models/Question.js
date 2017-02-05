@@ -1,3 +1,9 @@
 const mongoose = require('mongoose');
 
-module.exports = mongoose.model('User', userSchema);
+let questionSchema = mongoose.Schema({
+	questText: String,
+	isStandard: Boolean,
+	weight: Number
+})
+
+module.exports = mongoose.model('Question', questionSchema);
