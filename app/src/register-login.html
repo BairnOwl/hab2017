@@ -28,7 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-ajax
             id="registerLoginAjax"
-            method="post"
+            method="POST"
             content-type="application/json"
             handle-as="text"
             on-response="handleUserResponse"
@@ -77,19 +77,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             console.log("DATA: " + this.formData.username);
         },
         postLogin: function() {
-            this.$.registerLoginAjax.url = '/create/user';
-            this._setReqBody();
-            this.$.registerLoginAjax.generateRequest();
+            var req = new XMLHttpRequest();
+            var str = "username=" + this.formData.username + "&password=" + this.formData.password;
+            console.log(req);
+            req.open('POST', '/create/user', true);
+            req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            req.send(str);
+            console.log(str);
         },
         postRegister: function() {
-            this.$.registerLoginAjax.url = '/create/user';
-            this._setReqBody();
-            this.$.registerLoginAjax.generateRequest();
+            var req = new XMLHttpRequest();
+            var str = "username=" + this.formData.username + "&password=" + this.formData.password;
+            console.log(req);
+            req.open('POST', '/create/user', true);
+            req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            req.send(str);
+            console.log(str);
         },
         handleUserResponse: function(event) {
-                console.log("Hello world ");
-                console.log(event.detail.response);
             var response = JSON.parse(event.detail.response);
+            console.log(response);
 
             if (response.id_token) {
                 this.error = '';
@@ -101,7 +108,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             // reset form data
-            this.formData = {};
+            //this.formData = {};
         },
         handleUserError: function(event) {
             this.error = event.detail.request.xhr.response;

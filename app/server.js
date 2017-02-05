@@ -5,8 +5,8 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-
 var http = require('http');
+app.use(bodyParser.urlencoded({extended:false}));
 
 var engines = require('consolidate');
 //app.engine('html', engines.hogan);
@@ -35,11 +35,13 @@ app.get('/bower_components/:folder/:file', function (req, res) {
 // Creates a new user
 app.post('/create/user/', function(req, res) {
 
-    //console.log(req.body);
     //console.log(req);
-    //console.log(res);
+    console.log("-------------------------");
+    console.log(req.body);
+
     var username = req.body.username;
-    var password = req.body.pass;
+    var password = req.body.password;
+
     var j = {
         "username": username,
         "password": password
