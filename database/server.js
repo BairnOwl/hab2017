@@ -26,7 +26,7 @@ db.once('open', function() {
       method: 'GET',
       path: '/users/{id}',
       handler: function (request, reply) {
-        reply("yo");
+        reply("yo " + request.params.id);
       }
   });
 
@@ -53,6 +53,39 @@ db.once('open', function() {
     }
   });
 
+  // CREATE NEW STORY FOR A GIVEN USER
+  // send json as follows:
+  /*
+    {
+      "title" : "My novel"
+    }
+  */
+  server.route({
+    method: 'POST',
+    path: '/users/{id}/stories',
+    handler: function (request, reply) {
+      let newStory = new Story({title: "Love Life"});
+      newStory.save((err, story) => {
+        if (err) {
+          throw err;
+        } else {
+          let req = {
+            method: 'PUT',
+            url: `/users/${request.params.id}`,
+            payload: JSON.stringify({'storyId': story.id})
+          }
+          server.inject(req, (res) => {
+            if (res.statusCode == 200) {
+              reply(story.toJSON())
+            } else {
+              reply(res)
+            }
+          })
+        }
+      });
+    }
+  });
+
   // UPDATE USER'S STORIES
   // ADD STORY ID
   // send json as follows:
@@ -72,7 +105,41 @@ db.once('open', function() {
     method: 'PUT',
     path: '/users/{id}',
     handler: function (request, reply) {
-      reply("Success!")
+      var id = request.params.id;
+      console.log(request.params.id);
+      if (request.payload && request.payload.storyId) {
+        User.findById(id, (err, user) => {
+          if (err) {
+            throw err;
+          } else {
+            user.storyIds.push(request.payload.storyId);
+            user.save((err, user) => {
+              if (err) {
+                throw err;
+              } else {
+                reply(user.toJSON());
+              }
+            })
+          }
+        })
+      } else if (request.payload && request.payload.storyIds) {
+        User.findById(id, (err, user) => {
+          if (err) {
+            throw err;
+          } else {
+            user.storyIds = request.payload.storyIds;
+            user.save((err, user) => {
+              if (err) {
+                throw err;
+              } else {
+                reply(user.toJSON());
+              }
+            })
+          }
+        })
+      } else {
+        throw new Error("bad data");
+      }
     }
   });
 
@@ -93,39 +160,6 @@ db.once('open', function() {
     path: '/users/{id}/stories/{storyId}',
     handler: function (request, reply) {
       reply("Success!")
-    }
-  });
-
-  // CREATE NEW STORY FOR A GIVEN USER
-  // send json as follows:
-  /*
-    {
-      "title" : "My novel"
-    }
-  */
-  server.route({
-    method: 'POST',
-    path: '/users/{id}/stories',
-    handler: function (request, reply) {
-      let newStory = new Story(title: "Love Life");
-      newStory.save((err, story) => {
-        if (err) {
-          throw err;
-        } else {
-          let req = {
-            method: 'PUT',
-            url: '/users/{id}',
-            payload: JSON.stringify({'storyId': story.id})
-          }
-          server.inject(req, (res) => {
-            if(res.statusCode == 200){
-              reply(story.toJSON())  
-            }else{
-              reply(res)
-            }
-          })
-        }
-      });
     }
   });
 
