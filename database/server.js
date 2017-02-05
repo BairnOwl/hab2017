@@ -131,11 +131,11 @@ db.once('open', function() {
     method: 'POST',
     path: '/users/{id}/stories',
     handler: function (request, reply) {
+      console.log('in new story');
+
       var body = JSON.parse(request.payload);
       
       let newStory = new Story({title: body.title});
-
-      console.log(newStory);
 
       newStory.save((err, story) => {
         if (err) {

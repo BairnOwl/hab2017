@@ -74,7 +74,7 @@ app.get('/view/user/:userId', function(req, res) {
         "userId": userId
     };
 
-    var url = '/users/' + userID;
+    var url = '/users/' + userId;
 
     // connect to database
     var request = new XMLHttpRequest();
@@ -103,7 +103,7 @@ app.post('/create/story/', function(req, res) {
       "title": title  
     };
 
-    var url = '/users/' + userId + '/stories';
+    var url = 'http://localhost:3000/users/' + userId + '/stories';
     console.log(url);
 
     // connect to database
