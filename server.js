@@ -62,7 +62,7 @@ app.get('/view/user/:userID', function(req, res) {
 
     var userId = req.params.userId;
     var j = {
-        "userId": userId,
+        "userId": userId
     };
 
     var url = '/users/' + userID;
