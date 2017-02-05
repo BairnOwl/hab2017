@@ -107,7 +107,25 @@ db.once('open', function() {
     method: 'POST',
     path: '/users/{id}/stories',
     handler: function (request, reply) {
-      reply("Success!")
+      let newStory = new Story(title: "Love Life");
+      newStory.save((err, story) => {
+        if (err) {
+          throw err;
+        } else {
+          let req = {
+            method: 'PUT',
+            url: '/users/{id}',
+            payload: JSON.stringify({'storyId': story.id})
+          }
+          server.inject(req, (res) => {
+            if(res.statusCode == 200){
+              reply(story.toJSON())  
+            }else{
+              reply(res)
+            }
+          })
+        }
+      });
     }
   });
 
