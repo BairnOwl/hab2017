@@ -18,7 +18,7 @@
 
     <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="My Story">
+    <meta name="application-name" content="My App">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -80,6 +80,7 @@
         margin-left: 50px;
     }
 
+
     #main {
         transition: margin-left .5s;
         padding: 16px;
@@ -89,7 +90,7 @@
         margin-left: 50px;
     }
 
-    #characters {
+    #stories {
         transition: margin-left .5s;
         padding: 16px;
         position: absolute;
@@ -98,7 +99,7 @@
         margin-left: 50px;
     }
 
-    #newChar {
+    #newStory {
         text-align:center;
     }
 
@@ -106,6 +107,7 @@
         .sidenav {padding-top: 15px;}
         .sidenav a {font-size: 18px;}
     }
+
 </style>
 
 <div id="mySidenav" class="sidenav">
@@ -124,17 +126,18 @@
     <span style="font-size:15px;cursor:pointer" onclick="openNav()">INSERT IMAGE HERE</span>
 </div>
 
-<div id="newChar">
-    <form action="/create/user" method="POST" type="newChar">
-        <input type="submit" name="newChar" value="New Character?" />
-    </form></div>
+<div id="newStory">
+        <form action="/create/user" method="POST" type="newStory">
+            <input type="submit" name="newStory" value="New Story?" />
+        </form>
+</div>
 
-<div id="characters">
-    <h2>My Characters</h2>
+<div id="stories">
+    <h2>My Stories</h2>
     <!--GET STORIES--->
-    <ul>{{#character}}
-        <li><h3>{{character.title}}</h3></li>
-        {{/character}}</ul>
+    <ul>{{#book}}
+        <li><h3>{{book.title}}</h3></li>
+        {{/book}}</ul>
     <div></div>
 </div>
 

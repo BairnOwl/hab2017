@@ -11,6 +11,8 @@ var http = require('http');
 var engines = require('consolidate');
 app.engine('html', engines.hogan);
 app.set('views', __dirname + '/templates');
+app.set('view engine', engines.hogan);
+
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:false}));
 

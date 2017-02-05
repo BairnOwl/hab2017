@@ -89,6 +89,15 @@
         margin-left: 50px;
     }
 
+    #questions {
+        transition: margin-left .5s;
+        padding: 16px;
+        position: absolute;
+        top: 0;
+        right: 25px;
+        margin-left: 50px;
+    }
+
     @media screen and (max-height: 450px) {
         .sidenav {padding-top: 15px;}
         .sidenav a {font-size: 18px;}
@@ -103,19 +112,21 @@
     <a href="#">Log Out</a>
 </div>
 
+<div id="header"><h3>Know Thy Self</h3><hr></div>
+
 <div id="main">
-    <h3>Know Thy Self</h3>
     <!---<img user="">--->
     <h4>User Name</h4>
     <span style="font-size:15px;cursor:pointer" onclick="openNav()">INSERT IMAGE HERE</span>
 </div>
 
-<div id="stories">
-    <h2>My Stories</h2>
+<div id="questions">
+    <h2>Character Interview</h2>
     <!--GET STORIES--->
-    <ul>{{#book}}
-        <li><h3>{{book.title}}</h3></li>
-        {{/book}}</ul>
+    <ul>{{#question}}
+        <li><h3>{{question.title}}</h3></li>
+        <li><h3>{{question.answer}}</h3></li>
+        {{/question}}</ul>
     <div></div>
 </div>
 
