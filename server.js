@@ -26,7 +26,7 @@ app.get('/src/:file', function (req, res) {
 });
 
 app.get('/bower_components/:folder/:file', function (req, res) {
-    res.render('bower_components/'+req.params.folder+'/'+req.params.file);
+    res.render('bower_components/' + req.params.folder+'/'+req.params.file);
 });
 
 // USER ROUTES
@@ -34,10 +34,13 @@ app.get('/bower_components/:folder/:file', function (req, res) {
 // Creates a new user
 app.post('/create/user/', function(req, res) {
 
-    var username = req.body.username;
-    var password = req.body.pass;
+    console.log(req);
+    console.log("-------------------------");
+    console.log(req.body);
 
-    console.log(username);
+    var username = req.body.username;
+    var password = req.body.password;
+
     var j = {
         "username": username,
         "password": password

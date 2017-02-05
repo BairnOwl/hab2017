@@ -12,15 +12,18 @@ function sendMessage(e) {
     e.preventDefault();
 
     // get the parameters
-    var username = $('#username');
-    var password = $('#password');
+    var username = $('#username').val();
+    var password = $('#password').val();
     var post_string = "username=" + username + "&password=" + password;
     
-    
+    console.log(post_string);
     // send it to the server
     var req = new XMLHttpRequest();
-    req.server.open(this.method, this.url, true);
-    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    console.log(req);
+
     req.open('POST', '/create/user', true);
+    //req.server.open('get', this.url, true);
+    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
     req.send(post_string);
 }
