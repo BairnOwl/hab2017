@@ -24,12 +24,12 @@ function sendMessage(e) {
     req.open('POST', '/create/user', true);
     req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-    req.onreadystatechange = function(e) {
-        if (req.readyState == 4 && req.status == 200){
-            response = JSON.parse(req.responseText);
-            
-        }
-    };
+    // req.onreadystateexchange = function(e) {
+    //     if (req.readyState == 4 && req.status == 200){
+    //         response = JSON.parse(req.responseText);
+    //
+    //     }
+    // };
 
     req.send(post_string);
 }

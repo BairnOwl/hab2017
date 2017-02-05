@@ -25,11 +25,6 @@ app.get('/', function (req, res) {
     res.render('index.html');
 });
 
-app.get('/', function (req, res) {
-    //res.sendFile('index.html', {root: '.'});
-    res.send("hello world");
-});
-
 app.get('/bower_components/:folder/:file', function (req, res) {
     res.render('bower_components/' + req.params.folder+'/'+req.params.file);
 });
@@ -53,11 +48,11 @@ app.post('/create/user/', function(req, res) {
     request.open('POST', url, true);
 
     request.addEventListener('load', function(e){
-        
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
             console.log(data._id);
-            res.render('user-home.html', { userId: data._id});
+            res.render('user-home.html', { userId: data._id });
+            console.log("nooooooo");
         }
     }, false);
 
